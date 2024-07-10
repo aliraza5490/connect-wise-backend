@@ -47,7 +47,6 @@ if (Number(process.env.VERCEL) === 1) {
 } else {
   mongoose.connect(process.env.MONGODB_URI).then(() => {
     log('Connected to MongoDB');
-    log(`Starting Cron Jobs: ${new Date().toISOString()}`);
   });
 }
 
