@@ -4,6 +4,8 @@ import { z } from 'zod';
 
 const loginController = async (req: IReq, res: IRes) => {
   const schema = z.object({
+    firstName: z.string(),
+    lastName: z.string(),
     email: z.string().email(),
     password: z.string().min(6),
     linkedInProfile: z.string().url(),
@@ -37,6 +39,8 @@ const loginController = async (req: IReq, res: IRes) => {
   const passHash = await bcrypt.hash(value.data.password, 10);
 
   await new User({
+    firstName: value.data.firstName,
+    lastName: value.data.lastName,
     email: value.data.email,
     password: passHash,
     linkedInProfile: value.data.linkedInProfile,
