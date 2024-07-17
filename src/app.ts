@@ -52,7 +52,9 @@ if (Number(process.env.VERCEL) === 1) {
 
 // --- Routes ---
 import authRoutes from '@routes/v1/auth.routes';
+import infoRoutes from '@routes/v1/info.routes';
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/info', infoRoutes);
 
 // error handler
 app.use((err, req, res, next) => {
