@@ -4,12 +4,12 @@ import { z } from 'zod';
 
 const loginController = async (req: IReq, res: IRes) => {
   const schema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
+    firstName: z.string().min(2).max(80),
+    lastName: z.string().min(2).max(80),
     email: z.string().email(),
     password: z.string().min(6),
-    linkedInProfile: z.string().url(),
-    bio: z.string(),
+    linkedInProfile: z.string().optional().default(''),
+    bio: z.string().optional().default(''),
   });
 
   const value = schema.safeParse(req.body);
@@ -17,6 +17,7 @@ const loginController = async (req: IReq, res: IRes) => {
   if (!value.success) {
     return res.status(400).json({
       errors: value.error.errors,
+      message: 'Invalid data',
     });
   }
 
@@ -26,13 +27,8 @@ const loginController = async (req: IReq, res: IRes) => {
   });
 
   if (existingUser) {
-    return res.status(401).json({
-      errors: [
-        {
-          name: 'auth',
-          message: 'User already exists.',
-        },
-      ],
+    return res.status(409).json({
+      message: 'User already exists',
     });
   }
 

@@ -30,11 +30,11 @@ const UserSchema = new Schema({
   },
   linkedInProfile: {
     type: String,
-    required: true,
+    default: '',
   },
   bio: {
     type: String,
-    required: true,
+    default: '',
   },
   isActive: {
     type: Boolean,
