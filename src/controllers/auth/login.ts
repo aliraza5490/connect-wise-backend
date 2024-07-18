@@ -1,24 +1,24 @@
 import User from '@models/User';
 import { signJWT } from '@utils/helpers';
 import bcrypt from 'bcryptjs';
-import Joi from 'joi';
+import { z } from 'zod';
 
 const loginController = async (req: IReq, res: IRes) => {
-  const { error, value } = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-  }).validate(req.body);
+  const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6),
+  });
 
-  if (error) {
-    const errors = error.details.map((err) => ({
-      name: err.context.label,
-      message: err.message,
-    }));
+  const value = schema.safeParse(req.body);
 
-    return res.status(400).json({ errors });
+  if (!value.success) {
+    return res.status(400).json({
+      errors: value.error.errors,
+      message: 'Invalid data',
+    });
   }
 
-  const user = await User.findOne({ email: req.body.email, isActive: true });
+  const user = await User.findOne({ email: value.data.email, isActive: true });
 
   if (!user) {
     return res.status(401).json({
@@ -31,7 +31,7 @@ const loginController = async (req: IReq, res: IRes) => {
     });
   }
 
-  const isValid = bcrypt.compareSync(value.password, user.password);
+  const isValid = bcrypt.compareSync(value.data.password, user.password);
 
   if (!isValid) {
     return res.status(401).json({
