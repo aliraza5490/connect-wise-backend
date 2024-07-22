@@ -1,3 +1,3 @@
-import adminAuth from './adminAuth';
+import mentorAuth from './mentorAuth';
 
-export default { adminAuth };
+export default { mentorAuth };

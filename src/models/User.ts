@@ -25,7 +25,7 @@ const UserSchema = new Schema({
   role: {
     type: String,
     required: [true, 'Role is required'],
-    enum: ['admin', 'user'],
+    enum: ['mentor', 'user'],
     default: 'user',
   },
   linkedInProfile: {
