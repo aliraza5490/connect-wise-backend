@@ -36,6 +36,14 @@ const UserSchema = new Schema({
     type: String,
     default: '',
   },
+  expertise: {
+    type: String,
+    default: '',
+  },
+  experience: {
+    type: String,
+    default: '',
+  },
   isActive: {
     type: Boolean,
     default: true,
