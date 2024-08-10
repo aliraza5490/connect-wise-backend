@@ -10,4 +10,4 @@ router.post(
   controllers.stripe,
 );
 
-module.exports = router;
+export default router;
