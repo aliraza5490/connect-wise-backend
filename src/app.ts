@@ -1,3 +1,4 @@
+import webhooks from '@routes/v1/webhook.routes';
 import connectDB from '@utils/connectDBVercel';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -26,6 +27,7 @@ import 'express-async-errors';
 app.use(helmet());
 app.use(cors());
 app.use(compression());
+app.use('/webhook', webhooks);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
