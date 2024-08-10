@@ -17,6 +17,14 @@ const OrderSchema = new Schema({
     type: Number,
     required: true,
   },
+  paid: {
+    type: Boolean,
+    default: false,
+  },
+  fulfilled: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
