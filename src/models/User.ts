@@ -44,6 +44,10 @@ const UserSchema = new Schema({
     type: String,
     default: '',
   },
+  pricePerMonth: {
+    type: Number,
+    default: 0,
+  },
   isActive: {
     type: Boolean,
     default: true,
