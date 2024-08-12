@@ -4,9 +4,9 @@ import Stripe from 'stripe';
 import { z } from 'zod';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-module.exports = async (req: IReq, res: IRes) => {
+export default async (req: IReq, res: IRes) => {
   const schema = z.object({
-    mentor: z.string().min(24).max(26),
+    mentorID: z.string().min(24).max(26),
   });
 
   const value = schema.safeParse(req.body);
@@ -19,7 +19,7 @@ module.exports = async (req: IReq, res: IRes) => {
   }
 
   const mentor = await User.findOne({
-    _id: value.data.mentor,
+    _id: value.data.mentorID,
     role: 'mentor',
     isActive: true,
   });
@@ -32,7 +32,8 @@ module.exports = async (req: IReq, res: IRes) => {
 
   const orderDetails = {
     user: req.user._id,
-    mentor: value.data.mentor,
+    mentorID: value.data.mentorID,
+    price: mentor.pricePerMonth,
   };
 
   const order = await new Order(orderDetails).save();
