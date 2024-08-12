@@ -1,3 +1,3 @@
 export default (req: IReq, res: IRes) => {
-  res.send(req.user);
+  return res.send(req.user);
 };
