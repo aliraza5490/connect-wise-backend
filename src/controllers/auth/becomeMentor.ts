@@ -11,7 +11,7 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     linkedInProfile: z.string().min(2).max(200),
     bio: z.string().min(2).max(500),
     expertise: z.string().min(2).max(80),
-    experience: z.string().min(2).max(80),
+    level: z.string().min(2).max(80),
   });
 
   const value = schema.safeParse(req.body);
@@ -43,7 +43,7 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     linkedInProfile: value.data.linkedInProfile,
     bio: value.data.bio,
     expertise: value.data.expertise,
-    experience: value.data.experience,
+    level: value.data.level,
   }).save();
 
   return res.json({ success: true });
