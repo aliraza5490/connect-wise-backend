@@ -1,4 +1,4 @@
-import User from '@models/User';
+import Mentor from '@models/Mentor';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
@@ -23,9 +23,8 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     });
   }
 
-  const existingUser = await User.findOne({
+  const existingUser = await Mentor.findOne({
     email: value.data.email,
-    isActive: true,
   });
 
   if (existingUser) {
@@ -36,7 +35,7 @@ const becomeMentor = async (req: IReq, res: IRes) => {
 
   const passHash = await bcrypt.hash(value.data.password, 10);
 
-  await new User({
+  await new Mentor({
     firstName: value.data.firstName,
     lastName: value.data.lastName,
     email: value.data.email,
@@ -45,7 +44,6 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     bio: value.data.bio,
     expertise: value.data.expertise,
     experience: value.data.experience,
-    role: 'mentor',
   }).save();
 
   return res.json({ success: true });

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const UserSchema = new Schema({
+const MentorSchema = new Schema({
   firstName: {
     type: String,
     required: [true, 'First name is required'],
@@ -30,6 +30,18 @@ const UserSchema = new Schema({
     type: String,
     default: '',
   },
+  expertise: {
+    type: String,
+    default: '',
+  },
+  experience: {
+    type: String,
+    default: '',
+  },
+  pricePerMonth: {
+    type: Number,
+    default: 0,
+  },
   isActive: {
     type: Boolean,
     default: true,
@@ -40,4 +52,4 @@ const UserSchema = new Schema({
   },
 });
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model('Mentor', MentorSchema);

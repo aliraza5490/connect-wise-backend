@@ -23,7 +23,6 @@ const loginController = async (req: IReq, res: IRes) => {
 
   const existingUser = await User.findOne({
     email: value.data.email,
-    isActive: true,
   });
 
   if (existingUser) {
