@@ -24,23 +24,23 @@ const MentorSchema = new Schema({
   },
   linkedInProfile: {
     type: String,
-    default: '',
+    required: true,
   },
   bio: {
     type: String,
-    default: '',
+    required: true,
   },
   expertise: {
     type: String,
-    default: '',
+    required: true,
   },
-  experience: {
+  level: {
     type: String,
-    default: '',
+    required: true,
   },
   pricePerMonth: {
     type: Number,
-    default: 0,
+    required: true,
   },
   reviews: [
     {
