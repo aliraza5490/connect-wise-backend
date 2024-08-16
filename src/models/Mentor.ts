@@ -48,6 +48,10 @@ const MentorSchema = new Schema({
       ref: 'Review',
     },
   ],
+  isFeatured: {
+    type: Boolean,
+    default: false,
+  },
   isActive: {
     type: Boolean,
     default: true,
