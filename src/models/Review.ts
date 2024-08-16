@@ -2,33 +2,31 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const OrderSchema = new Schema({
-  user: {
+const ReviewSchema = new Schema({
+  by: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
     required: true,
   },
-  mentor: {
+  forWhom: {
     type: Schema.Types.ObjectId,
-    ref: 'Mentor',
     required: true,
   },
-  price: {
+  type: {
+    type: String,
+    enum: ['ByMentorForUser', 'ByUserForMentor'],
+    default: 'ByUserForMentor',
+    required: true,
+  },
+  rating: {
     type: Number,
     required: true,
   },
-  paid: {
-    type: Boolean,
-    default: false,
-  },
-  fulfilled: {
-    type: Boolean,
-    default: false,
+  review: {
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-
-export default mongoose.model('Order', OrderSchema);

@@ -30,6 +30,12 @@ const UserSchema = new Schema({
     type: String,
     default: '',
   },
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
   isActive: {
     type: Boolean,
     default: true,

@@ -42,6 +42,12 @@ const MentorSchema = new Schema({
     type: Number,
     default: 0,
   },
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
   isActive: {
     type: Boolean,
     default: true,
