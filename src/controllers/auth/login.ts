@@ -1,3 +1,4 @@
+import Mentor from '@models/Mentor';
 import User from '@models/User';
 import { signJWT } from '@utils/helpers';
 import bcrypt from 'bcryptjs';
@@ -18,17 +19,22 @@ const loginController = async (req: IReq, res: IRes) => {
     });
   }
 
-  const user = await User.findOne({ email: value.data.email, isActive: true });
+  let user = await User.findOne({ email: value.data.email, isActive: true });
+  let role = 'user';
 
   if (!user) {
-    return res.status(401).json({
-      errors: [
-        {
-          name: 'auth',
-          message: 'Invalid credentials',
-        },
-      ],
-    });
+    user = await Mentor.findOne({ email: value.data.email, isActive: true });
+    role = 'mentor';
+    if (!user) {
+      return res.status(401).json({
+        errors: [
+          {
+            name: 'auth',
+            message: 'Invalid credentials',
+          },
+        ],
+      });
+    }
   }
 
   const isValid = bcrypt.compareSync(value.data.password, user.password);
@@ -44,7 +50,7 @@ const loginController = async (req: IReq, res: IRes) => {
     });
   }
 
-  return res.json({ token: signJWT(user) });
+  return res.json({ token: signJWT(user, role) });
 };
 
 export default loginController;
