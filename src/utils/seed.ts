@@ -56,6 +56,7 @@ async function main() {
         return {
           ...mentor,
           password,
+          isFeatured: Math.random() > 0.5,
         };
       }),
       {
@@ -65,17 +66,19 @@ async function main() {
 
     log('Seeding reviews');
     const newReviews = reviews.map((review) => {
-      const user = Object.values(newUsers.insertedIds)[
-        Math.floor(Math.random() * Array(newUsers).length)
-      ];
-      const mentor = Object.values(newMentors.insertedIds)[
-        Math.floor(Math.random() * Array(newMentors).length)
-      ];
+      const user =
+        newUsers.insertedIds[
+          Math.floor(Math.random() * Object.keys(newUsers.insertedIds).length)
+        ];
+      const mentor =
+        newMentors.insertedIds[
+          Math.floor(Math.random() * Object.keys(newMentors.insertedIds).length)
+        ];
 
       return {
         ...review,
-        by: user._id,
-        forWhom: mentor._id,
+        by: user,
+        forWhom: mentor,
       };
     });
     await Review.insertMany(newReviews);
