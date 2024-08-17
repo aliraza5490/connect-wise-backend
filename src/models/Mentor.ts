@@ -11,6 +11,15 @@ const MentorSchema = new Schema({
     type: String,
     required: [true, 'Last name is required'],
   },
+  gender: {
+    type: String,
+    enum: ['Male', 'Female', 'null'],
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -30,7 +39,7 @@ const MentorSchema = new Schema({
     type: String,
     required: true,
   },
-  expertise: {
+  title: {
     type: String,
     required: true,
   },
@@ -42,12 +51,6 @@ const MentorSchema = new Schema({
     type: Number,
     required: true,
   },
-  reviews: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Review',
-    },
-  ],
   isFeatured: {
     type: Boolean,
     default: false,

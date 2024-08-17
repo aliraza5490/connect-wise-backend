@@ -30,3 +30,5 @@ const ReviewSchema = new Schema({
     default: Date.now,
   },
 });
+
+export default mongoose.model('Review', ReviewSchema);

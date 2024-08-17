@@ -11,6 +11,11 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Last name is required'],
   },
+  gender: {
+    type: String,
+    enum: ['Male', 'Female', 'null'],
+    required: true,
+  },
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -30,12 +35,6 @@ const UserSchema = new Schema({
     type: String,
     default: '',
   },
-  reviews: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Review',
-    },
-  ],
   isActive: {
     type: Boolean,
     default: true,

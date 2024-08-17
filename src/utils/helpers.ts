@@ -2,10 +2,13 @@ import User from '@models/User';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
 
-export function signJWT(user: InstanceType<typeof User>) {
+export function signJWT(
+  user: InstanceType<typeof User>,
+  role: string = 'user',
+) {
   const payload = {
     id: user._id,
-    role: user.role,
+    role,
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
