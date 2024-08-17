@@ -56,9 +56,11 @@ if (Number(process.env.VERCEL) === 1) {
 import authRoutes from '@routes/v1/auth.routes';
 import buyRoutes from '@routes/v1/buy.routes';
 import infoRoutes from '@routes/v1/info.routes';
+import mentorRoutes from '@routes/v1/mentors.routes';
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/info', infoRoutes);
 app.use('/api/v1/buy', buyRoutes);
+app.use('/api/v1/mentor', mentorRoutes);
 
 // error handler
 app.use((err, req, res, next) => {

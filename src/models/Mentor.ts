@@ -65,4 +65,13 @@ const MentorSchema = new Schema({
   },
 });
 
+MentorSchema.index({
+  firstName: 'text',
+  lastName: 'text',
+  title: 'text',
+  bio: 'text',
+  gender: 'text',
+  level: 'text',
+});
+
 export default mongoose.model('Mentor', MentorSchema);
