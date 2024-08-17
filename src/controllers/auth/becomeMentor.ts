@@ -6,10 +6,13 @@ const becomeMentor = async (req: IReq, res: IRes) => {
   const schema = z.object({
     firstName: z.string().min(2).max(80),
     lastName: z.string().min(2).max(80),
+    gender: z.enum(['Male', 'Female']),
     email: z.string().email(),
     password: z.string().min(6).max(50),
     linkedInProfile: z.string().min(2).max(200),
     bio: z.string().min(2).max(500),
+    pricePerMonth: z.number().int().positive(),
+    country: z.string().min(2).max(2),
     title: z.string().min(2).max(80),
     level: z.string().min(2).max(80),
   });
@@ -41,6 +44,9 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     email: value.data.email,
     password: passHash,
     linkedInProfile: value.data.linkedInProfile,
+    pricePerMonth: value.data.pricePerMonth,
+    gender: value.data.gender,
+    country: value.data.country,
     bio: value.data.bio,
     title: value.data.title,
     level: value.data.level,
