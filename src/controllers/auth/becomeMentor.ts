@@ -10,7 +10,7 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     password: z.string().min(6).max(50),
     linkedInProfile: z.string().min(2).max(200),
     bio: z.string().min(2).max(500),
-    expertise: z.string().min(2).max(80),
+    title: z.string().min(2).max(80),
     level: z.string().min(2).max(80),
   });
 
@@ -42,7 +42,7 @@ const becomeMentor = async (req: IReq, res: IRes) => {
     password: passHash,
     linkedInProfile: value.data.linkedInProfile,
     bio: value.data.bio,
-    expertise: value.data.expertise,
+    title: value.data.title,
     level: value.data.level,
   }).save();
 
