@@ -12,14 +12,15 @@ export default async (req: IReq, res: IRes) => {
       $lookup: {
         from: 'reviews',
         localField: '_id',
-        foreignField: 'mentor',
+        foreignField: 'forWhom',
         as: 'reviews',
       },
     },
     {
       $addFields: {
         rating: {
-          $avg: '$reviews.rating',
+          // rounded to 1 decimal place average rating
+          $round: [{ $avg: '$reviews.rating' }, 1],
         },
       },
     },
