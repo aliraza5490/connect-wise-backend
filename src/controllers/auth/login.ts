@@ -27,12 +27,7 @@ const loginController = async (req: IReq, res: IRes) => {
     role = 'mentor';
     if (!user) {
       return res.status(401).json({
-        errors: [
-          {
-            name: 'auth',
-            message: 'Invalid credentials',
-          },
-        ],
+        message: 'Invalid credentials',
       });
     }
   }
@@ -41,12 +36,7 @@ const loginController = async (req: IReq, res: IRes) => {
 
   if (!isValid) {
     return res.status(401).json({
-      errors: [
-        {
-          name: 'auth',
-          message: 'Invalid credentials',
-        },
-      ],
+      message: 'Invalid credentials',
     });
   }
 
