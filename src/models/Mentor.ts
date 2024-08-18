@@ -11,6 +11,10 @@ const MentorSchema = new Schema({
     type: String,
     required: [true, 'Last name is required'],
   },
+  avatar: {
+    type: String,
+    required: true,
+  },
   gender: {
     type: String,
     enum: ['Male', 'Female', 'null'],

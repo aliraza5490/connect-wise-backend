@@ -23,6 +23,14 @@ export default async (req: IReq, res: IRes) => {
         localField: '_id',
         foreignField: 'forWhom',
         as: 'reviews',
+        pipeline: [
+          {
+            $project: {
+              type: 0,
+              __v: 0,
+            },
+          },
+        ],
       },
     },
     {
@@ -51,6 +59,10 @@ export default async (req: IReq, res: IRes) => {
     {
       $project: {
         reviewsCount: 0,
+        password: 0,
+        isActive: 0,
+        createdAt: 0,
+        __v: 0,
       },
     },
   ]);
