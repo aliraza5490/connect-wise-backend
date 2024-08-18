@@ -1,8 +1,8 @@
+import Mentor from '@models/Mentor';
 import Order from '@models/Order';
-import User from '@models/User';
 import Stripe from 'stripe';
 import { z } from 'zod';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET);
 
 export default async (req: IReq, res: IRes) => {
   const schema = z.object({
@@ -18,9 +18,8 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  const mentor = await User.findOne({
+  const mentor = await Mentor.findOne({
     _id: value.data.mentorID,
-    role: 'mentor',
     isActive: true,
   });
 
@@ -32,7 +31,7 @@ export default async (req: IReq, res: IRes) => {
 
   const orderDetails = {
     user: req.user._id,
-    mentorID: value.data.mentorID,
+    mentor: value.data.mentorID,
     price: mentor.pricePerMonth,
   };
 
@@ -57,8 +56,8 @@ export default async (req: IReq, res: IRes) => {
       userID: String(req.user._id),
       orderID: String(order._id),
     },
-    success_url: `${process.env.FRONTEND_URL}/dashboard/order/step-5?success=true&id=${order._id}`,
-    cancel_url: `${process.env.FRONTEND_URL}/dashboard/order/step-5?canceled=true`,
+    success_url: `${process.env.FRONTEND_URL}?success=true&id=${order._id}`,
+    cancel_url: `${process.env.FRONTEND_URL}?canceled=true`,
   });
 
   return res.json({
