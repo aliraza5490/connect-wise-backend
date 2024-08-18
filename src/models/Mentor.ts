@@ -13,7 +13,7 @@ const MentorSchema = new Schema({
   },
   avatar: {
     type: String,
-    required: true,
+    default: '',
   },
   gender: {
     type: String,
