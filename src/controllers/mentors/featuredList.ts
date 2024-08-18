@@ -1,10 +1,19 @@
 import Mentor from '@models/Mentor';
 
 export default async (req: IReq, res: IRes) => {
+  const page = parseInt(req.query.page as string, 10) || 1;
+  const limit = parseInt(req.query.limit as string, 10) || 10;
+  const skip = (page - 1) * limit;
+
+  const totalDocs = await Mentor.countDocuments({
+    isFeatured: true,
+    isActive: true,
+  });
+
   const mentors = await Mentor.aggregate([
     {
       $match: {
-        isFeatured: true,
+        isFeatured: false,
         isActive: true,
       },
     },
@@ -24,12 +33,37 @@ export default async (req: IReq, res: IRes) => {
         },
       },
     },
+    // sort by rating in descending order
     {
-      $project: {
-        password: 0,
+      $sort: {
+        rating: -1,
       },
+    },
+    {
+      $skip: skip,
+    },
+    {
+      $limit: limit,
     },
   ]);
 
-  return res.json(mentors);
+  const totalPages = Math.ceil(totalDocs / limit);
+  const hasNextPage = page < totalPages;
+  const hasPrevPage = page > 1;
+  const nextPage = hasNextPage ? page + 1 : null;
+  const prevPage = hasPrevPage ? page - 1 : null;
+  const pagingCounter = (page - 1) * limit + 1;
+
+  res.json({
+    docs: mentors,
+    totalDocs,
+    limit,
+    page,
+    totalPages,
+    hasNextPage,
+    nextPage,
+    hasPrevPage,
+    prevPage,
+    pagingCounter,
+  });
 };

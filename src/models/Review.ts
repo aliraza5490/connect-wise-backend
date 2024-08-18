@@ -7,6 +7,14 @@ const ReviewSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
   forWhom: {
     type: Schema.Types.ObjectId,
     required: true,

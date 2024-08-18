@@ -66,19 +66,23 @@ async function main() {
 
     log('Seeding reviews');
     const newReviews = reviews.map((review) => {
-      const user =
-        newUsers.insertedIds[
-          Math.floor(Math.random() * Object.keys(newUsers.insertedIds).length)
-        ];
+      const userIndex = Math.floor(
+        Math.random() * Object.keys(newUsers.insertedIds).length,
+      );
+      const user = newUsers.insertedIds[userIndex];
       const mentor =
         newMentors.insertedIds[
           Math.floor(Math.random() * Object.keys(newMentors.insertedIds).length)
         ];
 
+      const userDetails = users[userIndex];
+
       return {
         ...review,
         by: user,
         forWhom: mentor,
+        firstName: userDetails?.firstName,
+        lastName: userDetails?.lastName,
       };
     });
     await Review.insertMany(newReviews);
