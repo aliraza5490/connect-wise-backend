@@ -10,6 +10,7 @@ const loginController = async (req: IReq, res: IRes) => {
     password: z.string().min(6),
     linkedInProfile: z.string().optional().default(''),
     bio: z.string().optional().default(''),
+    gender: z.enum(['Male', 'Female']),
   });
 
   const value = schema.safeParse(req.body);
@@ -40,6 +41,7 @@ const loginController = async (req: IReq, res: IRes) => {
     password: passHash,
     linkedInProfile: value.data.linkedInProfile,
     bio: value.data.bio,
+    gender: value.data.gender,
   }).save();
 
   return res.json({ success: true });
