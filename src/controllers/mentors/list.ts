@@ -31,12 +31,15 @@ export default async (req: IReq, res: IRes) => {
           // rounded to 1 decimal place average rating
           $round: [{ $avg: '$reviews.rating' }, 1],
         },
+        reviewsCount: {
+          $size: '$reviews',
+        },
       },
     },
-    // sort by rating in descending order
     {
       $sort: {
         rating: -1,
+        reviewsCount: -1,
       },
     },
     {
@@ -44,6 +47,11 @@ export default async (req: IReq, res: IRes) => {
     },
     {
       $limit: limit,
+    },
+    {
+      $project: {
+        reviewsCount: 0,
+      },
     },
   ]);
 
