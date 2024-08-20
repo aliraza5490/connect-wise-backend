@@ -4,8 +4,8 @@ import { z } from 'zod';
 
 export default async (req: IReq, res: IRes) => {
   const schema = z.object({
-    currentPassword: z.string().min(6),
     password: z.string().min(6),
+    newPassword: z.string().min(6),
   });
 
   const value = schema.safeParse(req.body);
@@ -17,10 +17,7 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  const isMatch = await bcrypt.compare(
-    value.data.currentPassword,
-    req.user.password,
-  );
+  const isMatch = await bcrypt.compare(value.data.password, req.user.password);
 
   if (!isMatch) {
     return res.status(401).json({
@@ -28,7 +25,7 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  const passHash = await bcrypt.hash(value.data.password, 10);
+  const passHash = await bcrypt.hash(value.data.newPassword, 10);
 
   await User.findByIdAndUpdate(req.user._id, {
     password: passHash,
