@@ -72,6 +72,7 @@ const MentorSchema = new Schema({
 MentorSchema.index({
   firstName: 'text',
   lastName: 'text',
+  email: 'text',
   title: 'text',
   bio: 'text',
   gender: 'text',
