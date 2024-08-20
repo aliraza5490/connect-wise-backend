@@ -70,3 +70,6 @@ typings/
 /temp
 package-lock.json
 .vercel
+
+# uploads
+/uploads

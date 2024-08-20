@@ -1,8 +1,15 @@
 import User from '@models/User';
 import bcrypt from 'bcryptjs';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 import { z } from 'zod';
 
-const loginController = async (req: IReq, res: IRes) => {
+// Configuration
+cloudinary.config({
+  url: process.env.CLOUDINARY_URL,
+});
+
+export default async (req: IReq, res: IRes) => {
   const schema = z.object({
     firstName: z.string().min(2).max(80),
     lastName: z.string().min(2).max(80),
@@ -32,6 +39,18 @@ const loginController = async (req: IReq, res: IRes) => {
     });
   }
 
+  const file = req.file;
+  const avatar = await cloudinary.uploader.upload(file.path, {
+    folder: 'avatars',
+    public_id: `avatar_${value.data.email}`,
+    format: file.mimetype.split('/')[1],
+    width: 150,
+    height: 150,
+  });
+
+  // delete file from file.path
+  fs.unlinkSync(file.path);
+
   const passHash = await bcrypt.hash(value.data.password, 10);
 
   await new User({
@@ -42,9 +61,8 @@ const loginController = async (req: IReq, res: IRes) => {
     linkedInProfile: value.data.linkedInProfile,
     bio: value.data.bio,
     gender: value.data.gender,
+    avatar: avatar.secure_url,
   }).save();
 
   return res.json({ success: true });
 };
-
-export default loginController;
