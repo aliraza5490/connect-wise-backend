@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 
-const onlineUsers = new Map();
+export const onlineUsers = new Map();
 
 /**
  * Listen on Web Sockets
