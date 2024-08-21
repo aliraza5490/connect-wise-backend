@@ -21,7 +21,9 @@ moduleAlias.addAliases(getAliases());
 
 import debug from 'debug';
 import http from 'http';
+import { Server } from 'socket.io';
 import app from './app';
+import webSockets from './webSockets';
 const log = debug('backend:server');
 
 /**
@@ -56,6 +58,12 @@ app.set('port', normalizedPort);
  */
 
 const server = http.createServer(app);
+
+/**
+ * Create Web Sockets server.
+ */
+export const io = new Server(server);
+webSockets(io);
 
 /**
  * Event listener for HTTP server "error" event.
