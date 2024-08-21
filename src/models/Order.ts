@@ -21,9 +21,11 @@ const OrderSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  fulfilled: {
-    type: Boolean,
-    default: false,
+  expiringOn: {
+    type: Date,
+    required: true,
+    // default 30 days from now
+    default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   },
   createdAt: {
     type: Date,

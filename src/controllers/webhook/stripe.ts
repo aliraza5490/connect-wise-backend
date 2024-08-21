@@ -1,3 +1,4 @@
+import Chat from '@models/Chat';
 import Order from '@models/Order';
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -42,15 +43,10 @@ export default async (req: IReq, res: IRes) => {
         },
       );
 
-      await Order.updateOne(
-        {
-          _id: order._id,
-        },
-        {
-          paid: true,
-          fulfilled: true,
-        },
-      );
+      await Chat.create({
+        user: order.user._id,
+        mentor: order.mentor,
+      });
       break;
     }
     default: {
