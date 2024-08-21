@@ -1,7 +1,7 @@
-import mentee from './mentee';
-import mentor from './mentor';
+import history from './history';
+import sendMessage from './sendMessage';
 
 export default {
-  mentee,
-  mentor,
+  history,
+  sendMessage,
 };
