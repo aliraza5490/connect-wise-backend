@@ -14,9 +14,12 @@ export default function webSockets(io: Server) {
         }
       });
     });
-    socket.on('join', (id: string) => {
+    socket.on('join', (id: string, callback) => {
       onlineUsers.set(id, socket.id);
       console.log('onlineUsers', onlineUsers);
+      callback({
+        status: 'ok',
+      });
     });
   });
 }
