@@ -43,7 +43,10 @@ export default async (req: IReq, res: IRes) => {
           product_data: {
             name: `Buy Premium Membership`,
           },
-          unit_amount: Number((5 * 100).toFixed(0)), // 5 USD
+          unit_amount: 500, // 5 USD,
+          recurring: {
+            interval: 'month',
+          },
         },
         quantity: 1,
       },
