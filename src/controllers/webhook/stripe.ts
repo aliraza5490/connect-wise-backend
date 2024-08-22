@@ -7,7 +7,6 @@ export default async (req: IReq, res: IRes) => {
   const sig = req.headers['stripe-signature'];
 
   let event: Stripe.Event | null = null;
-
   try {
     event = stripe.webhooks.constructEvent(
       req.body,

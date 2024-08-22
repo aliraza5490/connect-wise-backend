@@ -22,12 +22,12 @@ import './auth';
 import 'express-async-errors';
 
 // --- Webhooks ---
-
-// --- Middlewares ---
 app.use(helmet());
 app.use(cors());
+app.use('/api/v1/webhook', webhooks);
+
+// --- Middlewares ---
 app.use(compression());
-app.use('/webhook', webhooks);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
