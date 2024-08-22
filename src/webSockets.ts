@@ -14,9 +14,9 @@ export default function webSockets(io: Server) {
     },
     next,
   ) {
-    if (socket.handshake.query && socket.handshake.query.token) {
+    if (socket.handshake?.auth?.token) {
       jwt.verify(
-        socket.handshake.query.token as string,
+        socket.handshake.auth.token as string,
         process.env.JWT_SECRET,
         function (err, decoded) {
           if (err) return next(new Error('Authentication error'));
