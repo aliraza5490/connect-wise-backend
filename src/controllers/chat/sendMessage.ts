@@ -46,7 +46,9 @@ export default async (req: IReq, res: IRes) => {
 
   await chat.save();
 
+  const latestMessage = chat.messages[chat.messages.length - 1];
+
   return res.send({
-    success: true,
+    ...latestMessage.toObject(),
   });
 };
