@@ -1,10 +1,12 @@
 import Chat from '@models/Chat';
+import { io } from '@root/server';
+import { onlineUsers } from '@root/webSockets';
 import { z } from 'zod';
 
 export default async (req: IReq, res: IRes) => {
   const schema = z.object({
     message: z.string().min(1).max(1000),
-    chatID: z.string().min(1).max(100),
+    chatID: z.string().min(1).max(25),
   });
 
   const value = schema.safeParse(req.body);
@@ -16,8 +18,6 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  const userRole = req.user.pricePerMonth ? 'mentor' : 'user';
-
   const chat = await Chat.findOne({ _id: value.data.chatID });
 
   if (!chat) {
@@ -26,13 +26,13 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  if (userRole === 'user' && String(chat.user) !== String(req.user._id)) {
+  if (!req.user?.pricePerMonth && String(chat.user) !== String(req.user._id)) {
     return res.status(403).json({
       message: 'Forbidden',
     });
   }
 
-  if (userRole === 'mentor' && String(chat.mentor) !== String(req.user._id)) {
+  if (req.user?.pricePerMonth && String(chat.mentor) !== String(req.user._id)) {
     return res.status(403).json({
       message: 'Forbidden',
     });
@@ -47,6 +47,19 @@ export default async (req: IReq, res: IRes) => {
   await chat.save();
 
   const latestMessage = chat.messages[chat.messages.length - 1];
+  const userRole = req.user?.pricePerMonth ? 'mentor' : 'user';
+
+  const toUser = String(userRole === 'user' ? chat.mentor : chat.user);
+
+  const toOnlineUser = onlineUsers.get(toUser);
+  const eventName = userRole === 'user' ? 'newMessageMentor' : 'newMessage';
+
+  if (toOnlineUser) {
+    io.to(toOnlineUser).emit(eventName, {
+      ...latestMessage.toObject(),
+      chatID: chat._id,
+    });
+  }
 
   return res.send({
     ...latestMessage.toObject(),
