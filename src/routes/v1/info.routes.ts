@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(passport.authenticate('jwt', { session: false }));
 // routes
 router.get('/me', controllers.userInfo);
+router.get('/orders', controllers.orders);
 router.post('/mentor', controllers.mentor);
 
 export default router;
