@@ -16,5 +16,6 @@ router.use((req: IReq, res: IRes, next) => {
   next();
 });
 router.get('/overview', controllers.overview);
+router.get('/stats', controllers.stats);
 
 export default router;
