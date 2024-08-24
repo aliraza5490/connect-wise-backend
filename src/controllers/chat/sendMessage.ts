@@ -26,6 +26,12 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
+  if (chat.pausingOn > new Date()) {
+    return res.status(403).json({
+      message: 'Chat is paused',
+    });
+  }
+
   if (!req.user?.pricePerMonth && String(chat.user) !== String(req.user._id)) {
     return res.status(403).json({
       message: 'Forbidden',

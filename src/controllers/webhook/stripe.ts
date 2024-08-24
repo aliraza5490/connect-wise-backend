@@ -42,7 +42,16 @@ export default async (req: IReq, res: IRes) => {
         },
       );
 
+      const chat = await Chat.findOne({
+        order: order._id,
+      });
+      if (chat) {
+        chat.pausingOn = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
+        await chat.save();
+        break;
+      }
       await Chat.create({
+        order: order._id,
         user: order.user._id,
         mentor: order.mentor,
       });

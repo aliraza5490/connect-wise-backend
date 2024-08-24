@@ -3,6 +3,15 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const ChatSchema = new Schema({
+  order: {
+    type: Schema.Types.ObjectId,
+    ref: 'Order',
+    required: true,
+  },
+  pausingOn: {
+    type: Date,
+    default: Date.now,
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
