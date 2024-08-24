@@ -47,6 +47,7 @@ export default async (req: IReq, res: IRes) => {
       });
       if (chat) {
         chat.pausingOn = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
+        chat.order = order._id;
         await chat.save();
         break;
       }

@@ -9,6 +9,7 @@ router.post('/search', controllers.search);
 router.get('/list', controllers.list);
 
 router.use(passport.authenticate('jwt', { session: false }));
+router.post('/review', controllers.review);
 router.use((req: IReq, res: IRes, next) => {
   if (!req.user?.pricePerMonth) {
     return res.status(403).send('Access denied');

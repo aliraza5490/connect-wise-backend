@@ -12,7 +12,7 @@ export default async (req: IReq, res: IRes) => {
       return {
         ...chat.toObject(),
         status: onlineUsers.get(String(chat.user._id)) ? 'online' : 'offline',
-        isPaused: chat.pausingOn > new Date(),
+        isPaused: new Date(chat.pausingOn).getTime() < new Date().getTime(),
       };
     });
     return res.send(chatHistoryWithStatus);
@@ -27,7 +27,7 @@ export default async (req: IReq, res: IRes) => {
     return {
       ...chat.toObject(),
       status: onlineUsers.get(String(chat.mentor._id)) ? 'online' : 'offline',
-      isPaused: chat.pausingOn > new Date(),
+      isPaused: new Date(chat.pausingOn).getTime() < new Date().getTime(),
     };
   });
 

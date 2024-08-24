@@ -17,6 +17,11 @@ const OrderSchema = new Schema({
     type: Number,
     required: true,
   },
+  review: {
+    type: Schema.Types.ObjectId,
+    ref: 'Review',
+    default: null,
+  },
   paid: {
     type: Boolean,
     default: false,
