@@ -12,9 +12,8 @@ const PremiumSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  fulfilled: {
-    type: Boolean,
-    default: false,
+  subscriptionID: {
+    type: String,
   },
   createdAt: {
     type: Date,
