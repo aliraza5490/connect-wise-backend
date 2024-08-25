@@ -25,6 +25,26 @@ export default async (req: IReq, res: IRes) => {
         as: 'reviews',
         pipeline: [
           {
+            $lookup: {
+              from: 'users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'user',
+              pipeline: [
+                {
+                  $project: {
+                    firstName: 1,
+                    lastName: 1,
+                    avatar: 1,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $unwind: '$user',
+          },
+          {
             $project: {
               type: 0,
               __v: 0,
