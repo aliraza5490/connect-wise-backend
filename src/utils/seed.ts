@@ -14,6 +14,7 @@ import mentors from '@data/mentors.json';
 import reviews from '@data/reviews.json';
 import users from '@data/users.json';
 import Mentor from '@models/Mentor';
+import Premium from '@models/Premium';
 import Review from '@models/Review';
 import User from '@models/User';
 import bcrypt from 'bcryptjs';
@@ -52,12 +53,23 @@ async function main() {
         return {
           ...mentor,
           password,
-          isFeatured: Math.random() > 0.5,
         };
       }),
       {
         rawResult: true,
       },
+    );
+
+    log('Seeding premiums');
+    await Premium.insertMany(
+      Object.values(newMentors.insertedIds)
+        .slice(-6)
+        .map((mentor) => {
+          return {
+            mentor,
+            isActive: true,
+          };
+        }),
     );
 
     log('Seeding reviews');

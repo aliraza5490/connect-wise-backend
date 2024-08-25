@@ -21,4 +21,4 @@ const PremiumSchema = new Schema({
   },
 });
 
-export default mongoose.model('Premium', PremiumSchema);
+export default mongoose.model('Premium', PremiumSchema, 'premiums');

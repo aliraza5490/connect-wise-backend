@@ -5,16 +5,71 @@ export default async (req: IReq, res: IRes) => {
   const limit = parseInt(req.query.limit as string, 10) || 10;
   const skip = (page - 1) * limit;
 
-  const totalDocs = await Mentor.countDocuments({
-    isFeatured: true,
-    isActive: true,
-  });
+  const totalDocs = await Mentor.aggregate([
+    {
+      $match: {
+        isActive: true,
+      },
+    },
+    {
+      $lookup: {
+        from: 'premiums',
+        localField: '_id',
+        foreignField: 'mentor',
+        as: 'premium',
+        pipeline: [
+          {
+            $match: {
+              isActive: true,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        isFeatured: {
+          $cond: {
+            if: {
+              $gt: [
+                {
+                  $size: '$premium',
+                },
+                0,
+              ],
+            },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        isFeatured: true,
+      },
+    },
+  ]);
 
   const mentors = await Mentor.aggregate([
     {
       $match: {
-        isFeatured: false,
         isActive: true,
+      },
+    },
+    {
+      $lookup: {
+        from: 'premiums',
+        localField: '_id',
+        foreignField: 'mentor',
+        as: 'premium',
+        pipeline: [
+          {
+            $match: {
+              isActive: true,
+            },
+          },
+        ],
       },
     },
     {
@@ -62,6 +117,25 @@ export default async (req: IReq, res: IRes) => {
         reviewsCount: {
           $size: '$reviews',
         },
+        isFeatured: {
+          $cond: {
+            if: {
+              $gt: [
+                {
+                  $size: '$premium',
+                },
+                0,
+              ],
+            },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        isFeatured: true,
       },
     },
     {
@@ -79,6 +153,7 @@ export default async (req: IReq, res: IRes) => {
     {
       $project: {
         reviewsCount: 0,
+        premiums: 0,
         password: 0,
         isActive: 0,
         createdAt: 0,
@@ -87,7 +162,7 @@ export default async (req: IReq, res: IRes) => {
     },
   ]);
 
-  const totalPages = Math.ceil(totalDocs / limit);
+  const totalPages = Math.ceil(totalDocs?.length / limit);
   const hasNextPage = page < totalPages;
   const hasPrevPage = page > 1;
   const nextPage = hasNextPage ? page + 1 : null;

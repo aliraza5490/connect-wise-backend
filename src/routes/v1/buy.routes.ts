@@ -22,7 +22,7 @@ router.post(
   '/premium',
   // Forbidden for mentee or already premium mentors
   (req: IReq, res: IRes, next) => {
-    if (!req.user?.pricePerMonth || req.user?.isFeatured) {
+    if (!req.user?.pricePerMonth) {
       return res.status(403).json({
         message: 'Forbidden',
       });

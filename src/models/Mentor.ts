@@ -56,10 +56,6 @@ const MentorSchema = new Schema(
       type: Number,
       required: true,
     },
-    isFeatured: {
-      type: Boolean,
-      default: false,
-    },
     isActive: {
       type: Boolean,
       default: true,

@@ -33,6 +33,18 @@ export default async (req: IReq, res: IRes) => {
     mentor: value.data.mentorID,
   };
 
+  // existing premium check
+  const existingPremium = await Premium.findOne({
+    mentor: value.data.mentorID,
+    isActive: true,
+  });
+
+  if (existingPremium) {
+    return res.status(400).json({
+      message: 'Already a premium mentor',
+    });
+  }
+
   const premium = await new Premium(orderDetails).save();
 
   const session = await stripe.checkout.sessions.create({
