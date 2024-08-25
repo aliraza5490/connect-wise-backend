@@ -26,7 +26,7 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  if (chat.pausingOn > new Date()) {
+  if (new Date(chat.pausingOn).getTime() < new Date().getTime()) {
     return res.status(403).json({
       message: 'Chat is paused',
     });

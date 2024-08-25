@@ -36,6 +36,7 @@ export default async (req: IReq, res: IRes) => {
   }
 
   const review = await Review.create({
+    order: chat.order,
     user: req.user?._id,
     mentor: chat.mentor,
     rating: value.data.rating,

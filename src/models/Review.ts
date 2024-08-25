@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const ReviewSchema = new Schema({
+  order: {
+    type: Schema.Types.ObjectId,
+    ref: 'Order',
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

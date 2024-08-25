@@ -14,7 +14,6 @@ import mentors from '@data/mentors.json';
 import reviews from '@data/reviews.json';
 import users from '@data/users.json';
 import Mentor from '@models/Mentor';
-import Order from '@models/Order';
 import Review from '@models/Review';
 import User from '@models/User';
 import bcrypt from 'bcryptjs';
@@ -26,13 +25,10 @@ const log = debug('backend:seed');
 async function main() {
   try {
     log('Seeding started');
-    log('Dropping existing collections');
-    await Promise.all([
-      User.collection.drop(),
-      Mentor.collection.drop(),
-      Review.collection.drop(),
-      Order.collection.drop(),
-    ]);
+
+    log('Dropping existing database');
+    await mongoose.connection.db.dropDatabase();
+
     log('Collections dropped');
     log('Seeding new documents');
     log('Seeding users');
@@ -79,10 +75,8 @@ async function main() {
 
       return {
         ...review,
-        by: user,
-        forWhom: mentor,
-        firstName: userDetails?.firstName,
-        lastName: userDetails?.lastName,
+        user,
+        mentor,
       };
     });
     await Review.insertMany(newReviews);

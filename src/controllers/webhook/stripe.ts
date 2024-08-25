@@ -46,7 +46,7 @@ export default async (req: IReq, res: IRes) => {
         order: order._id,
       });
       if (chat) {
-        chat.pausingOn = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
+        chat.pausingOn = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
         chat.order = order._id;
         await chat.save();
         break;
@@ -55,6 +55,7 @@ export default async (req: IReq, res: IRes) => {
         order: order._id,
         user: order.user._id,
         mentor: order.mentor,
+        pausingOn: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
       });
       break;
     }

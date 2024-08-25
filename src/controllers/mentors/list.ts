@@ -21,7 +21,7 @@ export default async (req: IReq, res: IRes) => {
       $lookup: {
         from: 'reviews',
         localField: '_id',
-        foreignField: 'forWhom',
+        foreignField: 'mentor',
         as: 'reviews',
         pipeline: [
           {
