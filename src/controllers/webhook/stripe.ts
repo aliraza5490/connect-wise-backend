@@ -55,10 +55,7 @@ export default async (req: IReq, res: IRes) => {
       const info = eventData.metadata;
 
       if (info?.premiumID) {
-        const premium = await Premium.findOne({
-          _id: info.premiumID,
-          paid: false,
-        });
+        const premium = await Premium.findById(info.premiumID);
 
         if (!premium) {
           return res.status(400).send('Premium not found');
