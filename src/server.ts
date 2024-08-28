@@ -63,8 +63,18 @@ const server = http.createServer(app);
  * Create Web Sockets server.
  */
 export const io = new Server(server, {
+  path: '/api/v1/socket',
   cors: {
-    origin: '*',
+    origin(requestOrigin, callback) {
+      if (process.env.NODE_ENV === 'development') {
+        return callback(null, true);
+      }
+      if (requestOrigin === process.env.FRONTEND_URL) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
   },
 });
 webSockets(io);
