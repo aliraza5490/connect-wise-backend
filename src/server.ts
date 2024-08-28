@@ -64,7 +64,6 @@ const server = http.createServer(app);
  */
 export const io = new Server(server, {
   path: '/api/v1/socket',
-  addTrailingSlash: false,
   cors: {
     origin: (requestOrigin, callback) => {
       if (process.env.NODE_ENV === 'development') {
