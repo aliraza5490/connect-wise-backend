@@ -1,19 +1,4 @@
-import Premium from '@models/Premium';
-
 export default async (req: IReq, res: IRes) => {
-  let isFeatured = false;
-
-  if (req.user.pricePerMonth) {
-    const premium = await Premium.findOne({
-      mentor: req.user._id,
-      isActive: true,
-    });
-
-    if (premium) {
-      isFeatured = true;
-    }
-  }
-
   return res.send({
     _id: req.user._id,
     firstName: req.user.firstName,
@@ -24,10 +9,9 @@ export default async (req: IReq, res: IRes) => {
     email: req.user.email,
     linkedInProfile: req.user.linkedInProfile,
     bio: req.user.bio,
-    isFeatured: req.user.pricePerMonth ? isFeatured : undefined,
-    manageSubscriptions:
-      req.user.pricePerMonth && isFeatured
-        ? process.env.STRIPE_CUSTOMER_PORTAL
-        : undefined,
+    isFeatured: req.user.isPremium ? req.user.isPremium : false,
+    manageSubscriptions: req.user.isPremium
+      ? process.env.STRIPE_CUSTOMER_PORTAL
+      : undefined,
   });
 };

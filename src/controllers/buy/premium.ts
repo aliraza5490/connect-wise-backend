@@ -1,41 +1,11 @@
-import Mentor from '@models/Mentor';
 import Premium from '@models/Premium';
 import Stripe from 'stripe';
-import { z } from 'zod';
 const stripe = new Stripe(process.env.STRIPE_SECRET);
 
 export default async (req: IReq, res: IRes) => {
-  const schema = z.object({
-    mentorID: z.string().min(24).max(26),
-  });
-
-  const value = schema.safeParse(req.body);
-
-  if (!value.success) {
-    return res.status(400).json({
-      errors: value.error.errors,
-      message: 'Invalid data',
-    });
-  }
-
-  const mentor = await Mentor.findOne({
-    _id: value.data.mentorID,
-    isActive: true,
-  });
-
-  if (!mentor) {
-    return res.status(404).json({
-      message: 'Mentor not found',
-    });
-  }
-
-  const orderDetails = {
-    mentor: value.data.mentorID,
-  };
-
   // existing premium check
   const existingPremium = await Premium.findOne({
-    mentor: value.data.mentorID,
+    user: req.user._id,
     isActive: true,
   });
 
@@ -45,7 +15,9 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  const premium = await new Premium(orderDetails).save();
+  const premium = await new Premium({
+    user: req.user._id,
+  }).save();
 
   const session = await stripe.checkout.sessions.create({
     line_items: [

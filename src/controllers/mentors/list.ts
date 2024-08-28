@@ -15,7 +15,7 @@ export default async (req: IReq, res: IRes) => {
       $lookup: {
         from: 'premiums',
         localField: '_id',
-        foreignField: 'mentor',
+        foreignField: 'user',
         as: 'premium',
         pipeline: [
           {
@@ -61,7 +61,7 @@ export default async (req: IReq, res: IRes) => {
       $lookup: {
         from: 'premiums',
         localField: '_id',
-        foreignField: 'mentor',
+        foreignField: 'user',
         as: 'premium',
         pipeline: [
           {

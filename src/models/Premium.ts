@@ -3,9 +3,8 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const PremiumSchema = new Schema({
-  mentor: {
+  user: {
     type: Schema.Types.ObjectId,
-    ref: 'Mentor',
     required: true,
   },
   isActive: {

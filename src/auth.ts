@@ -1,5 +1,7 @@
 import Mentor from '@models/Mentor';
+import Premium from '@models/Premium';
 import User from '@models/User';
+import mongoose from 'mongoose';
 import passport from 'passport';
 import passportJWT from 'passport-jwt';
 
@@ -14,7 +16,7 @@ passport.use(
     },
     async (jwtPayload, done) => {
       try {
-        let user = await User.findOne({
+        let user: any = await User.findOne({
           _id: jwtPayload.id,
           isActive: true,
         }).lean();
@@ -27,6 +29,17 @@ passport.use(
 
           if (!user) {
             return done(null, false);
+          }
+
+          user.isPremium = false;
+
+          const premCount = await Premium.countDocuments({
+            user: new mongoose.Types.ObjectId(jwtPayload.id),
+            isActive: true,
+          });
+
+          if (premCount > 0) {
+            user.isPremium = true;
           }
         }
 

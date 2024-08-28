@@ -4,6 +4,7 @@ import passport from 'passport';
 const router = express.Router();
 
 router.use(passport.authenticate('jwt', { session: false }));
+
 // routes
 router.post(
   '/',
@@ -18,15 +19,11 @@ router.post(
   },
   controllers.buy,
 );
-router.post(
+
+router.get(
   '/premium',
-  // Forbidden for mentee or already premium mentors
+  // TODO: Forbidden for mentee or already premium users
   (req: IReq, res: IRes, next) => {
-    if (!req.user?.pricePerMonth) {
-      return res.status(403).json({
-        message: 'Forbidden',
-      });
-    }
     return next();
   },
   controllers.premium,
