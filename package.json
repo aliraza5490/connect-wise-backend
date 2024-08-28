@@ -19,6 +19,7 @@
     "postinstall": "rm -rf dist && tsc"
   },
   "dependencies": {
+    "@langchain/google-genai": "^0.0.26",
     "@types/multer": "^1.4.11",
     "axios": "^1.6.5",
     "bcryptjs": "^2.4.3",
