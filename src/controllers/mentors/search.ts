@@ -36,7 +36,9 @@ export default async (req: IReq, res: IRes) => {
           path: {
             wildcard: '*',
           },
-          fuzzy: {},
+          fuzzy: {
+            prefixLength: 2,
+          },
         },
       },
     },
