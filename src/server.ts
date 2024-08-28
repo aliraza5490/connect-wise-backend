@@ -62,7 +62,11 @@ const server = http.createServer(app);
 /**
  * Create Web Sockets server.
  */
-export const io = new Server(server);
+export const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+});
 webSockets(io);
 
 /**
