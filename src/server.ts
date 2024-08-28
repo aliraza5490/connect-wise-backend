@@ -64,11 +64,16 @@ const server = http.createServer(app);
  */
 export const io = new Server(server, {
   path: '/api/v1/socket',
+  addTrailingSlash: false,
   cors: {
     origin(requestOrigin, callback) {
       if (process.env.NODE_ENV === 'development') {
         return callback(null, true);
       }
+      console.log('requestOrigin');
+      console.log(requestOrigin);
+      console.log('process.env.FRONTEND_URL');
+      console.log(process.env.FRONTEND_URL);
       if (requestOrigin.startsWith(process.env.FRONTEND_URL)) {
         return callback(null, true);
       }
