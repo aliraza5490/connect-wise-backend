@@ -70,11 +70,7 @@ export const io = new Server(server, {
       if (process.env.NODE_ENV === 'development') {
         return callback(null, true);
       }
-      console.log('requestOrigin');
-      console.log(requestOrigin);
-      console.log('process.env.FRONTEND_URL');
-      console.log(process.env.FRONTEND_URL);
-      if (requestOrigin.startsWith(process.env.FRONTEND_URL)) {
+      if (process.env.FRONTEND_URL.indexOf(requestOrigin) !== -1) {
         return callback(null, true);
       }
       return callback(new Error('Not allowed by CORS'));
