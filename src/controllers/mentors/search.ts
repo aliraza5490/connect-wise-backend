@@ -29,11 +29,20 @@ export default async (req: IReq, res: IRes) => {
 
   const mentors = await Mentor.aggregate([
     {
+      $search: {
+        index: 'mentor-search-index',
+        text: {
+          query: value.data.query,
+          path: {
+            wildcard: '*',
+          },
+          fuzzy: {},
+        },
+      },
+    },
+    {
       $match: {
         isActive: true,
-        $text: {
-          $search: value.data.query,
-        },
       },
     },
     {
