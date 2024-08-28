@@ -13,7 +13,6 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd ~/repo/JetLinkMonitorBackend
+            cd ~/connectwise-backend
             git pull
-            pnpm i
-            pm2 restart JetLinkMonitorBackend
+            pm2 restart 0
