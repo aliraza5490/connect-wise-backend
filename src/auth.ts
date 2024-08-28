@@ -30,17 +30,17 @@ passport.use(
           if (!user) {
             return done(null, false);
           }
+        }
 
-          user.isPremium = false;
+        user.isPremium = false;
 
-          const premCount = await Premium.countDocuments({
-            user: new mongoose.Types.ObjectId(jwtPayload.id),
-            isActive: true,
-          });
+        const premCount = await Premium.countDocuments({
+          user: new mongoose.Types.ObjectId(jwtPayload.id),
+          isActive: true,
+        });
 
-          if (premCount > 0) {
-            user.isPremium = true;
-          }
+        if (premCount > 0) {
+          user.isPremium = true;
         }
 
         return done(null, user);

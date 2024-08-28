@@ -11,7 +11,7 @@ export default async (req: IReq, res: IRes) => {
 
   if (existingPremium) {
     return res.status(400).json({
-      message: 'Already a premium mentor',
+      message: 'Already a premium user.',
     });
   }
 
