@@ -24,7 +24,7 @@ export default async (req: IReq, res: IRes) => {
 
   value.data.chat.unshift([
     'system',
-    `My name is ${req.user.firstName} ${req.user.lastName}. I am a ${req.user.pricePerMonth ? 'Mentor' : 'Mentee'} at ConnectWise. ConnectWise is a Mentorship Platform. This is my bio - \`${req.user.bio}\`. You will act as my virtual assistant of ConnectWise. I will ask you questions and you will provide me with the answers. Please, don't ask questions about my personal info. Let's start by Greeting!`,
+    `ConnectWise is a Mentorship Platform. Where mentee can find the perfect mentor for their growth. Connect with experienced professionals who can guide them on their journey to success. Here is the url address of ConnectWise website: https://connectwise.vercel.app. You will act as my virtual assistant on the behalf of ConnectWise. Human name is ${req.user.firstName} ${req.user.lastName}. Human is a ${req.user.pricePerMonth ? 'Mentor' : 'Mentee'} at ConnectWise. This is human bio - \`${req.user.bio}\`.  Human will ask you questions about the his profession and you will provide the answers. Please, don't ask questions about personal info. Let's start by Greeting!`,
   ]);
 
   if (value.data.chat.length > 1 && value.data.message?.length > 1) {
