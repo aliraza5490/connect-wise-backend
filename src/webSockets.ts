@@ -34,17 +34,15 @@ export default function webSockets(io: Server) {
         decoded: any;
       },
     ) => {
+      onlineUsersStore.set(socket.decoded.id, socket.id);
+      console.log(onlineUsersStore);
+
       socket.on('disconnect', () => {
         onlineUsersStore.forEach((value, key) => {
           if (value === socket.id) {
             onlineUsersStore.delete(key);
           }
         });
-      });
-
-      socket.on('connect', () => {
-        onlineUsersStore.set(socket.decoded.id, socket.id);
-        console.log(onlineUsersStore);
       });
 
       socket.on('get_online', async (type: string, callback) => {
