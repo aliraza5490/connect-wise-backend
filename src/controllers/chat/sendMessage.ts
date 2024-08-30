@@ -1,6 +1,6 @@
 import Chat from '@models/Chat';
 import { io } from '@root/server';
-import { onlineUsers } from '@root/webSockets';
+import { onlineUsersStore } from '@root/webSockets';
 import { z } from 'zod';
 
 export default async (req: IReq, res: IRes) => {
@@ -57,7 +57,7 @@ export default async (req: IReq, res: IRes) => {
 
   const toUser = String(userRole === 'user' ? chat.mentor : chat.user);
 
-  const toOnlineUser = onlineUsers.get(toUser);
+  const toOnlineUser = onlineUsersStore.get(toUser);
   const eventName = userRole === 'user' ? 'newMessageMentor' : 'newMessage';
 
   if (toOnlineUser) {

@@ -2,7 +2,7 @@ import Order from '@models/Order';
 import jwt from 'jsonwebtoken';
 import { Server, Socket } from 'socket.io';
 
-export const onlineUsers = new Map();
+export const onlineUsersStore = new Map();
 
 /**
  * Listen on Web Sockets
@@ -34,15 +34,17 @@ export default function webSockets(io: Server) {
         decoded: any;
       },
     ) => {
-      onlineUsers.set(socket.decoded.id, socket.id);
-      console.log(onlineUsers);
-
       socket.on('disconnect', () => {
-        onlineUsers.forEach((value, key) => {
+        onlineUsersStore.forEach((value, key) => {
           if (value === socket.id) {
-            onlineUsers.delete(key);
+            onlineUsersStore.delete(key);
           }
         });
+      });
+
+      socket.on('connect', () => {
+        onlineUsersStore.set(socket.decoded.id, socket.id);
+        console.log(onlineUsersStore);
       });
 
       socket.on('get_online', async (type: string, callback) => {
@@ -52,7 +54,7 @@ export default function webSockets(io: Server) {
             paid: true,
             expiringOn: { $gte: new Date() },
           }).populate('mentor');
-          onlineUsers.forEach((value, key) => {
+          onlineUsersStore.forEach((value, key) => {
             if (orders.find((order) => order.mentor._id.toString() === key)) {
               onlineMentors.push(key);
             }
@@ -63,19 +65,19 @@ export default function webSockets(io: Server) {
           });
         }
         if (type == 'users') {
-          const onlineUsersList = [];
+          const onlineUsers = [];
           const orders = await Order.find({
             paid: true,
             expiringOn: { $gte: new Date() },
           }).populate('user');
-          onlineUsers.forEach((value, key) => {
+          onlineUsersStore.forEach((value, key) => {
             if (orders.find((order) => order.user._id.toString() === key)) {
-              onlineUsersList.push(key);
+              onlineUsers.push(key);
             }
           });
           return callback({
             status: 'ok',
-            onlineUsers: onlineUsersList,
+            onlineUsers,
           });
         }
         return callback({
