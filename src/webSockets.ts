@@ -34,6 +34,9 @@ export default function webSockets(io: Server) {
         decoded: any;
       },
     ) => {
+      onlineUsers.set(socket.decoded.id, socket.id);
+      console.log(onlineUsers);
+
       socket.on('disconnect', () => {
         onlineUsers.forEach((value, key) => {
           if (value === socket.id) {
@@ -41,13 +44,7 @@ export default function webSockets(io: Server) {
           }
         });
       });
-      socket.on('join', (id: string, callback) => {
-        onlineUsers.set(socket.decoded.id, socket.id);
-        console.log('onlineUsers', onlineUsers);
-        callback({
-          status: 'ok',
-        });
-      });
+
       socket.on('get_online', async (type: string, callback) => {
         if (type == 'mentors') {
           const onlineMentors = [];
