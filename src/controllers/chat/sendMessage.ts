@@ -26,7 +26,12 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
-  if (new Date(chat.pausingOn).getTime() < new Date().getTime()) {
+  const userRole = req.user?.pricePerMonth ? 'mentor' : 'user';
+
+  if (
+    new Date(chat.pausingOn).getTime() < new Date().getTime() &&
+    userRole !== 'mentor'
+  ) {
     return res.status(403).json({
       message: 'Chat is paused',
     });
@@ -53,7 +58,6 @@ export default async (req: IReq, res: IRes) => {
   await chat.save();
 
   const latestMessage = chat.messages[chat.messages.length - 1];
-  const userRole = req.user?.pricePerMonth ? 'mentor' : 'user';
 
   const toUser = String(userRole === 'user' ? chat.mentor : chat.user);
 
