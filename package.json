@@ -2,16 +2,6 @@
   "name": "backend-template",
   "version": "0.0.0",
   "private": true,
-  "_moduleAliases": {
-    "@utils": "./dist/utils",
-    "@models": "./dist/models",
-    "@controllers": "./dist/controllers",
-    "@middlewares": "./dist/middlewares",
-    "@services": "./dist/services",
-    "@types": "./dist/types",
-    "@config": "./dist/config",
-    "@routes": "./dist/routes"
-  },
   "scripts": {
     "start": "node ./dist/server.js",
     "tsc": "tsc",
