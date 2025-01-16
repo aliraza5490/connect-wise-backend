@@ -1,7 +1,10 @@
 import User from '@models/User';
 import bcrypt from 'bcryptjs';
-import { v2 as cloudinary } from 'cloudinary';
-import fs from 'fs';
+import {
+  v2 as cloudinary,
+  UploadApiErrorResponse,
+  UploadApiResponse,
+} from 'cloudinary';
 import { z } from 'zod';
 
 // Configuration
@@ -40,16 +43,27 @@ export default async (req: IReq, res: IRes) => {
   }
 
   const file = req.file;
-  const avatar = await cloudinary.uploader.upload(file.path, {
-    folder: 'avatars',
-    public_id: `avatar_${value.data.email}`,
-    format: file.mimetype.split('/')[1],
-    width: 150,
-    height: 150,
-  });
-
-  // delete file from file.path
-  fs.unlinkSync(file.path);
+  const avatar: UploadApiResponse | UploadApiErrorResponse = await new Promise(
+    (resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'avatars',
+          public_id: `avatar_${value.data.email}`,
+          format: file.mimetype.split('/')[1],
+          width: 150,
+          height: 150,
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        },
+      );
+      uploadStream.end(file.buffer);
+    },
+  );
 
   const passHash = await bcrypt.hash(value.data.password, 10);
 
