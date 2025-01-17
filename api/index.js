@@ -1,7 +1,9 @@
 const moduleAlias = require('module-alias');
 
+const { getAliases } = require('../dist/utils/moduleAliases');
+
+moduleAlias.addAliases(getAliases());
+
 moduleAlias();
 
-const app = require('../dist/app');
-
-module.exports = app;
+module.exports = require('../dist/app');
