@@ -16,6 +16,8 @@ passport.use(
     },
     async (jwtPayload, done) => {
       try {
+        let userType = 'user';
+
         let user: any = await User.findOne({
           _id: jwtPayload.id,
           isActive: true,
@@ -30,9 +32,13 @@ passport.use(
           if (!user) {
             return done(null, false);
           }
+
+          userType = 'mentor';
         }
 
         user.isPremium = false;
+
+        user.type = userType;
 
         const premCount = await Premium.countDocuments({
           user: new mongoose.Types.ObjectId(jwtPayload.id),

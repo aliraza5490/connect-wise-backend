@@ -9,8 +9,12 @@ declare global {
    * Represents an extended Request object with additional properties.
    */
   export interface IReq extends Request {
-    user?: InferSchemaType<typeof User.schema> &
-      InferSchemaType<typeof Mentor.schema>;
+    user?: Document &
+      InferSchemaType<typeof User.schema> &
+      InferSchemaType<typeof Mentor.schema> & {
+        isPremium: boolean;
+        type: 'user' | 'mentor';
+      };
   }
 
   /**
