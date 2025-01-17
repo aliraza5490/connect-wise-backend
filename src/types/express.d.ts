@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import { UserType } from './mongoose';
+import { Document, InferSchemaType } from 'mongoose';
+import User from '@models/User';
+import Mentor from '@models/Mentor';
 
 declare global {
   /**
    * Represents an extended Request object with additional properties.
    */
   export interface IReq extends Request {
-    /**
-     * Represents the user associated with the request.
-     */
-    user: UserType;
+    user?: InferSchemaType<typeof User.schema> &
+      InferSchemaType<typeof Mentor.schema>;
   }
 
   /**
