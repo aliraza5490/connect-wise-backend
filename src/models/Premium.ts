@@ -2,22 +2,23 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const PremiumSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    required: true,
+const PremiumSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
+    subscriptionID: {
+      type: String,
+    },
   },
-  isActive: {
-    type: Boolean,
-    default: false,
+  {
+    timestamps: true,
   },
-  subscriptionID: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+);
 
 export default mongoose.model('Premium', PremiumSchema, 'premiums');
