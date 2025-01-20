@@ -3,8 +3,9 @@ import { z } from 'zod';
 
 export default async (req: IReq, res: IRes) => {
   const schema = z.object({
+    chatID: z.string().min(24).max(24),
     message: z.string().min(1).max(1000),
-    chatID: z.string().min(1).max(25),
+    date: z.string().min(24).max(24),
   });
 
   const value = schema.safeParse(req.body);
@@ -35,12 +36,12 @@ export default async (req: IReq, res: IRes) => {
     });
   }
 
+  // check if user is allowed to send message
   if (userRole == 'user' && String(chat.user) !== String(req.user._id)) {
     return res.status(403).json({
       message: 'Forbidden',
     });
   }
-
   if (userRole == 'mentor' && String(chat.mentor) !== String(req.user._id)) {
     return res.status(403).json({
       message: 'Forbidden',
@@ -48,9 +49,9 @@ export default async (req: IReq, res: IRes) => {
   }
 
   chat.messages.push({
-    message: value.data.message,
     by: req.user._id,
-    date: new Date(),
+    message: value.data.message,
+    createdAt: new Date(value.data.date),
   });
 
   await chat.save();
