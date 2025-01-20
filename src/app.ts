@@ -61,12 +61,12 @@ import meetingRoutes from '@routes/v1/meeting.routes';
 import mentorRoutes from '@routes/v1/mentors.routes';
 import settingsRoutes from '@routes/v1/settings.routes';
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/info', infoRoutes);
 app.use('/api/v1/buy', buyRoutes);
+app.use('/api/v1/chat', chatRoutes);
+app.use('/api/v1/info', infoRoutes);
 app.use('/api/v1/mentor', mentorRoutes);
 app.use('/api/v1/meeting', meetingRoutes);
 app.use('/api/v1/settings', settingsRoutes);
-app.use('/api/v1/chat', chatRoutes);
 
 // error handler
 app.use((err, req, res, next) => {

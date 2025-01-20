@@ -1,8 +1,7 @@
 import Chat from '@models/Chat';
-import { onlineUsersStore } from '@root/webSockets';
 
 export default async (req: IReq, res: IRes) => {
-  if (req.user?.pricePerMonth) {
+  if (req.user?.type == 'mentor') {
     const chatHistory = await Chat.find({
       mentor: req.user._id,
     })
@@ -11,9 +10,7 @@ export default async (req: IReq, res: IRes) => {
     const chatHistoryWithStatus = chatHistory.map((chat) => {
       return {
         ...chat.toObject(),
-        status: onlineUsersStore.get(String(chat.user._id))
-          ? 'online'
-          : 'offline',
+        status: 'online',
         isPaused: new Date(chat.pausingOn).getTime() < new Date().getTime(),
       };
     });
@@ -28,9 +25,7 @@ export default async (req: IReq, res: IRes) => {
   const chatHistoryWithStatus = chatHistory.map((chat) => {
     return {
       ...chat.toObject(),
-      status: onlineUsersStore.get(String(chat.mentor._id))
-        ? 'online'
-        : 'offline',
+      status: 'online',
       isPaused: new Date(chat.pausingOn).getTime() < new Date().getTime(),
     };
   });

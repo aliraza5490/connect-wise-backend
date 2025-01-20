@@ -21,9 +21,7 @@ moduleAlias.addAliases(getAliases());
 
 import debug from 'debug';
 import http from 'http';
-import { Server } from 'socket.io';
 import app from './app';
-import webSockets from './webSockets';
 const log = debug('backend:server');
 
 /**
@@ -58,26 +56,6 @@ app.set('port', normalizedPort);
  */
 
 const server = http.createServer(app);
-
-/**
- * Create Web Sockets server.
- */
-export const io = new Server(server, {
-  path: '/api/v1/socket',
-  cors: {
-    origin: (requestOrigin, callback) => {
-      if (process.env.NODE_ENV === 'development') {
-        return callback(null, true);
-      }
-      if (process.env.FRONTEND_URL.indexOf(requestOrigin) !== -1) {
-        return callback(null, true);
-      }
-      return callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-  },
-});
-webSockets(io);
 
 /**
  * Event listener for HTTP server "error" event.

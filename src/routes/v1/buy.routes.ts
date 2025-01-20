@@ -1,7 +1,7 @@
 import controllers from '@controllers/buy';
-import express from 'express';
+import { Router } from 'express';
 import passport from 'passport';
-const router = express.Router();
+const router = Router();
 
 router.use(passport.authenticate('jwt', { session: false }));
 

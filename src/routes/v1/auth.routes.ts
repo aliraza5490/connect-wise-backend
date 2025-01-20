@@ -1,8 +1,8 @@
-import controllers from '@controllers/auth';
-import express from 'express';
-const router = express.Router();
-
 import multer from 'multer';
+import controllers from '@controllers/auth';
+import { Router } from 'express';
+
+const router = Router();
 
 const upload = multer({
   limits: {
